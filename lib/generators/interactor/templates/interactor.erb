@@ -1,0 +1,22 @@
+<% unless options['clean'] -%>
+# Methodist interactors use dry-transaction for work.
+# See https://github.com/dry-rb/dry-transaction for documentation about
+<% end -%>
+class <%= name.camelcase %> < Methodist::Interactor
+  <% unless options['skip-validations'] %>
+  # See http://dry-rb.org/gems/dry-validation/ for syntax of validations
+  set_schema do
+    # required(:name).value(:str?)
+  end
+  <% end %>
+  <% unless options['clean'] -%>
+  # Use your step, tee, try or map
+  # More info: http://dry-rb.org/gems/dry-transaction/step-adapters/
+  <% end -%>
+  <%- unless options['skip-validations'] %>
+  step :validate
+  <%- end -%>
+  <%- unless options['clean'] -%>
+  # step :do_something
+  <%- end %>
+end

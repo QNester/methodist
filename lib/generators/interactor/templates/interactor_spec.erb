@@ -1,0 +1,31 @@
+require 'rails_helper'
+
+RSpec.describe <%= name.camelcase %> do
+  subject { described_class.new.call(input) }
+
+  <%- unless options['skip-validations'] %>
+  context 'valid input' do
+    let!(:input) do
+      <%- unless options['clean'] %>
+      # valid input for your interactor
+      <%- end %>
+    end
+
+    it 'returns success result' do
+      expect(subject).to be_success
+    end
+  end
+
+  context 'invalid input' do
+    let!(:input) do
+      <%- unless options['clean'] %>
+      # failure input for yout interactor
+      <%- end %>
+    end
+
+    it 'returns success result' do
+      expect(subject).to be_failure
+    end
+  end
+  <%- end -%>
+end

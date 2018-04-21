@@ -6,4 +6,8 @@ class Methodist::Pattern
   def interactor?
     false
   end
+
+  def methodistic?
+    true
+  end
 end

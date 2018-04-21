@@ -18,7 +18,7 @@ class Methodist::Observer < Methodist::Pattern
           return if skip_if.call(result)
         end
         me.trigger!(klass, method_name)
-        result
+        result # return result of original_method after triggered method
       end
 
       klass.alias_method method_name, method_observe # redefine method
@@ -41,7 +41,9 @@ class Methodist::Observer < Methodist::Pattern
     end
 
     def trigger!(klass, method)
-      const_get(CONST_EXECUTION_BLOCK).call(klass, method)
+      block = const_get(CONST_EXECUTION_BLOCK) rescue nil
+      raise ExecuteBlockWasNotDefined, "You must define execute block in your #{self.name}" unless block
+      block.call(klass, method)
     end
 
     def execute(&block)
@@ -65,6 +67,8 @@ class Methodist::Observer < Methodist::Pattern
     def method_defined?(klass, method)
       klass.instance_methods(false).include?(method.to_sym)
     end
+
+    class ExecuteBlockWasNotDefined < StandardError; end
   end
 end
 

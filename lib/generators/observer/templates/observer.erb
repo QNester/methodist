@@ -6,4 +6,8 @@ class <%= name.camelcase %>Observer < Methodist::Observer
     # Example:
     #     CounterService.new.increment("#{klass.downcase.demodulize}_instance_method")
   end
+
+  class << self
+    # If you want use methods in execute you should define them here.
+  end
 end

@@ -1,4 +1,4 @@
-# Methodist interactors use dry-transaction for work.
+# Methodist interactor use dry-transaction for work.
 # See https://github.com/dry-rb/dry-transaction for documentation about
 
 class Hello::World < Methodist::Interactor
@@ -13,9 +13,10 @@ class Hello::World < Methodist::Interactor
   # Redefine #validate method for custom validation method
   # If you want to change returning value in validated Left, redefine private method #left_validation_value
   step :validate
-  tee :say_hello
+  step :say_hello
 
   def say_hello(input)
     puts "Hello, #{input[:name]}"
+    Right(nil)
   end
 end

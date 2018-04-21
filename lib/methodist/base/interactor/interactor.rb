@@ -1,7 +1,7 @@
 require "dry/transaction"
 require "dry/validation"
 
-class Methodist::Interactor
+class Methodist::Interactor < Methodist::Pattern
   include Dry::Transaction
 
   attr_accessor :validation_result

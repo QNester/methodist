@@ -1,8 +1,10 @@
 Description:
-    Explain the generator
+    Generator for create class Interactor based Methodist::Interactor
 
 Example:
     rails generate interactor Thing
 
     This will create:
-        what/will/it/create
+        app/interactors/thing.rb
+        spec/interactors/thing_spec.rb
+

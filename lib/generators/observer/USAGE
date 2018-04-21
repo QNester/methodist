@@ -1,0 +1,9 @@
+Description:
+    Generate new observer
+
+Example:
+    rails generate observer Notification
+
+    This will create:
+        config/initializers/observers/notification_observer.rb
+        spec/observers/initialized/notification_observer_spec.rb

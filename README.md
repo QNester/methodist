@@ -3,12 +3,13 @@ Methodist - gem for Ruby on Rails was created for stop chaos in your buisness lo
 This gem add to your rails application generators for some patterns:
 
 - __[NOT TEST]__ Interactor: class for doing some complex job.
-- __[NOT REALISED]__ Service: class with methods collections (it will be pleasure in work with
-internal services).
-- __[NOT REALISED]__ Command: class for doing some small job.
-- __[NOT REALISED]__ Builder: build data for later convenient use
+- __[NOT REALISED]__ Service: class with methods for work with internal services
+like redis, elasticsearch, internal API, etc.
+- __[NOT REALISED]__ Command: class for doing some small job. Command
+can be combine with services methods.
+- __[NOT REALISED]__ Builder: build data for later convenient use.
 - __[NOT REALISED]__ Observer: notification one part of application about 
-changes in another part of application
+changes in another part of application.
  
 
 ## Installation

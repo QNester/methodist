@@ -79,7 +79,7 @@ class Methodist::Interactor < Methodist::Pattern
   #
   #
   # ==== Attention
-  # You can redefine left_validation_value for custom
+  # You can redefine failure_validation_value for custom
   # validation value returning in Failure
   ##
   def validate(input)
@@ -87,7 +87,7 @@ class Methodist::Interactor < Methodist::Pattern
     raise SchemaDefinitionError, 'You must define schema with #schema method' unless schema
     @validation_result = schema.call(input)
     return Success(validation_result.to_h) if validation_result.success?
-    Failure(left_validation_value)
+    Failure(failure_validation_value)
   end
 
   private
@@ -95,7 +95,7 @@ class Methodist::Interactor < Methodist::Pattern
   ##
   # Method for validate input to interactor parameters.
   ##
-  def left_validation_value
+  def failure_validation_value
     field = validation_result.errors.keys.first
     {
       error: 'ValidationError',

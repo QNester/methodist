@@ -1,4 +1,8 @@
 # Methodist
+[![Build Status](https://travis-ci.org/QNester/methodist.svg?branch=master)](https://travis-ci.org/QNester/methodist)
+[![Maintainability](https://api.codeclimate.com/v1/badges/eebe37d3169041579416/maintainability)](https://codeclimate.com/github/QNester/methodist/maintainability)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gem-methodist/methodist?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Methodist - gem for Ruby on Rails was created for stop chaos in your buisness logic.
 This gem add to your rails application generators for some patterns:
 
@@ -9,9 +13,6 @@ internal services).
 - __[NOT REALISED]__ Command: class for doing some small job.
 - __[NOT REALISED]__ Builder: build data for later convenient use
  
-
-## Usage
-How to use my plugin.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -29,6 +30,13 @@ Or install it yourself as:
 ```bash
 $ gem install methodist
 ```
+
+## Usage
+Just execute in terminal
+```
+rails g <pattern_name> <generated_class>
+```
+where _<pattern_name>_ - one of ready patterns (observer, interactor).
 
 ## Contributing
 For contribute just:

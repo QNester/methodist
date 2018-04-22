@@ -17,15 +17,19 @@ class Methodist::Observer < Methodist::Pattern
     # ===== Options
     # * +skip_if+ [Proc] - Skip trigerred execution if condition true
     #
+    # ==== Yield
+    # main_block - execution block. If this block was passed,
+    # `#execute` block will be ignore
+    #
     ##
-    def observe(klass, method_name, skip_if: nil, &block)
+    def observe(klass, method_name, skip_if: nil, &main_block)
       method_name = method_name.to_sym
       original_method = klass.instance_method(method_name)
       method_observe = observer_method(method_name)
       method_dump = method_dump(method_name)
       me = self
 
-      return if method_defined?(klass, method_dump)
+      return false if method_defined?(klass, method_dump)
 
       klass.alias_method method_dump, method_name # dump method
 
@@ -35,7 +39,7 @@ class Methodist::Observer < Methodist::Pattern
           return if skip_if.call(result)
         end
         if block_given?
-          block.call(klass, method_name)
+          main_block.call(klass, method_name)
         else
           me.trigger!(klass, method_name)
         end
@@ -44,6 +48,7 @@ class Methodist::Observer < Methodist::Pattern
 
       klass.alias_method method_name, method_observe # redefine original method
       add_observed(klass, method_name)
+      true
     end
 
     ##
@@ -56,12 +61,13 @@ class Methodist::Observer < Methodist::Pattern
     def stop_observe(klass, method_name)
       method_observe = observer_method(method_name)
       method_dump = method_dump(method_name)
-      return unless method_defined?(klass, method_observe) && method_defined?(klass, method_dump)
+      return false unless method_defined?(klass, method_observe) && method_defined?(klass, method_dump)
 
       klass.alias_method method_name, method_dump # restore dumped method
       klass.remove_method(method_observe) # remove observed method
       klass.remove_method(method_dump) # remove dump method
       remove_from_observed(klass, method_name)
+      true
     end
 
     ##

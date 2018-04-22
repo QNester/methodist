@@ -5,7 +5,7 @@
 class <%= name.camelcase %> < Methodist::Interactor
   <% unless options['skip-validations'] %>
   # See http://dry-rb.org/gems/dry-validation/ for syntax of validations
-  set_schema do
+  schema do
     # required(:name).value(:str?)
   end
   <% end %>

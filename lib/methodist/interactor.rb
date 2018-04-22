@@ -30,7 +30,7 @@ class Methodist::Interactor < Methodist::Pattern
     #     step :validate
     #   end
     #
-    #   InteractorClass.new.call(name: nil) #=> Left(ValidationError)
+    #   InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
     #
     #
     # ==== See
@@ -66,28 +66,30 @@ class Methodist::Interactor < Methodist::Pattern
   #
   #   # your controller action
   #   def create
-  #     result = InteractorClass.new.call(name: nil) #=> Left(ValidationError)
+  #     result = InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
   #     raise InteractorError, result.value if result.failure?
   #   end
   #
   # ==== Return
-  # * +Dry::Monads::Result::Right+ - success result of interactor step
-  # * +Dry::Monads::Result::Left+  - failure result of interactor step
+  # * +Dry::Monads::Result::Success+ - success result of interactor step
+  # * +Dry::Monads::Result::Failure+  - failure result of interactor step
   #
   # ==== Raise
   # * +SchemaDefinitionError+  - raise if method was calling without schema definition
   #
   #
   # ==== Attention
-  # You can redefine left_validation_value for custom
-  # validation value returning in Left
+  # You can redefine failure_validation_value for custom
+  # validation value returning in Failure
   ##
   def validate(input)
+    input = {} unless input
+    raise InputClassError, 'If you want use custom #validate, you must pass hash to interactor' unless input.is_a?(Hash)
     schema = self.class.const_get SCHEMA_CONST rescue nil
     raise SchemaDefinitionError, 'You must define schema with #schema method' unless schema
     @validation_result = schema.call(input)
-    return Right(validation_result.to_h) if validation_result.success?
-    Left(left_validation_value)
+    return Success(validation_result.to_h) if validation_result.success?
+    Failure(failure_validation_value)
   end
 
   private
@@ -95,7 +97,7 @@ class Methodist::Interactor < Methodist::Pattern
   ##
   # Method for validate input to interactor parameters.
   ##
-  def left_validation_value
+  def failure_validation_value
     field = validation_result.errors.keys.first
     {
       error: 'ValidationError',
@@ -106,4 +108,5 @@ class Methodist::Interactor < Methodist::Pattern
 
 
   class SchemaDefinitionError < StandardError; end
+  class InputClassError < StandardError; end
 end

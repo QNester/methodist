@@ -1,15 +1,13 @@
-class TestInteractor < Methodist::Interactor
+class Hello::World < Methodist::Interactor
   schema do
     required(:name).value(:str?)
   end
-
+  
   step :validate
   step :say_hello
 
-  # Don't define validate method coz it realised in parent class
-
   def say_hello(input)
     puts "Hello, #{input[:name]}"
-    Success(true)
+    Success(input)
   end
 end

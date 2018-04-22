@@ -18,12 +18,5 @@ class ObserverGenerator < MethodistGenerator
       "#{filename_with_path(prefix: DEFAULT_PREFIX)}_observer.rb"
     )
   end
-
-  # def generate_spec
-  #   template(
-  #     TEMPLATE_SPEC_FILE,
-  #     "#{filename_with_path(prefix: 'spec/initialized')}_spec.rb"
-  #   )
-  # end
 end
 

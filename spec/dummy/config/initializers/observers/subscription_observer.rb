@@ -1,4 +1,4 @@
-class <%= name.camelcase %>Observer < Methodist::Observer
+class SubscriptionObserver < Methodist::Observer
   # observe Klass, :instance_method
 
   execute do |klass, instance_method|
@@ -8,6 +8,6 @@ class <%= name.camelcase %>Observer < Methodist::Observer
   end
 
   class << self
-    # If you want use methods in execute block you should define them here.
+    # If you want use methods in execute you should define them here.
   end
 end

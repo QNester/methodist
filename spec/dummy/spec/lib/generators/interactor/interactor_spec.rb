@@ -65,6 +65,5 @@ RSpec.describe InteractorGenerator, type: :generator do
       subject
       expect(File).to exist(expected_spec_file)
     end
-
   end
 end

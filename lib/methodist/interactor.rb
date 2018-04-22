@@ -30,7 +30,7 @@ class Methodist::Interactor < Methodist::Pattern
     #     step :validate
     #   end
     #
-    #   InteractorClass.new.call(name: nil) #=> Left(ValidationError)
+    #   InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
     #
     #
     # ==== See
@@ -66,13 +66,13 @@ class Methodist::Interactor < Methodist::Pattern
   #
   #   # your controller action
   #   def create
-  #     result = InteractorClass.new.call(name: nil) #=> Left(ValidationError)
+  #     result = InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
   #     raise InteractorError, result.value if result.failure?
   #   end
   #
   # ==== Return
-  # * +Dry::Monads::Result::Right+ - success result of interactor step
-  # * +Dry::Monads::Result::Left+  - failure result of interactor step
+  # * +Dry::Monads::Result::Success+ - success result of interactor step
+  # * +Dry::Monads::Result::Failure+  - failure result of interactor step
   #
   # ==== Raise
   # * +SchemaDefinitionError+  - raise if method was calling without schema definition
@@ -80,14 +80,14 @@ class Methodist::Interactor < Methodist::Pattern
   #
   # ==== Attention
   # You can redefine left_validation_value for custom
-  # validation value returning in Left
+  # validation value returning in Failure
   ##
   def validate(input)
     schema = self.class.const_get SCHEMA_CONST rescue nil
     raise SchemaDefinitionError, 'You must define schema with #schema method' unless schema
     @validation_result = schema.call(input)
-    return Right(validation_result.to_h) if validation_result.success?
-    Left(left_validation_value)
+    return Success(validation_result.to_h) if validation_result.success?
+    Failure(left_validation_value)
   end
 
   private

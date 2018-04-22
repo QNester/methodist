@@ -10,6 +10,6 @@ class TestInteractor < Methodist::Interactor
 
   def say_hello(input)
     puts "Hello, #{input[:name]}"
-    Right(true)
+    Success(true)
   end
 end

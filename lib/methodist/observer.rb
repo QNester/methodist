@@ -1,0 +1,119 @@
+##
+# == Methodist::Observer
+# Base class for methodist observers
+#
+#
+class Methodist::Observer < Methodist::Pattern
+  CONST_EXECUTION_BLOCK = 'EXEC_BLOCK'.freeze
+
+  class << self
+    ##
+    # Subscribe instance method of klass for observe
+    #
+    # ==== Parameters
+    # * +klass+ [Class] - Owner of method for observe
+    # * +method_name+ [String/Symbol] - Method name for observe
+    #
+    # ===== Options
+    # * +skip_if+ [Proc] - Skip trigerred execution if condition true
+    #
+    ##
+    def observe(klass, method_name, skip_if: nil)
+      method_name = method_name.to_sym
+      original_method = klass.instance_method(method_name)
+      method_observe = observer_method(method_name)
+      method_dump = method_dump(method_name)
+      me = self
+
+      return if method_defined?(klass, method_dump)
+
+      klass.alias_method method_dump, method_name # dump method
+
+      klass.define_method(method_observe) do |*args, &block|
+        result = original_method.bind(self).call(*args, &block)
+        unless skip_if.nil?
+          return if skip_if.call(result)
+        end
+        me.trigger!(klass, method_name)
+        result # return result of original method
+      end
+
+      klass.alias_method method_name, method_observe # redefine original method
+      add_observed(klass, method_name)
+    end
+
+    ##
+    # Stop observe instance method of klass for observe
+    #
+    # ==== Parameters
+    # * +klass+ [Class] - Klass owner of observed method
+    # * +method_name+ [String/Symbol] - Name of observed method
+    ##
+    def stop_observe(klass, method_name)
+      method_observe = observer_method(method_name)
+      method_dump = method_dump(method_name)
+      return unless method_defined?(klass, method_observe) && method_defined?(klass, method_dump)
+
+      klass.alias_method method_name, method_dump # restore dumped method
+      klass.remove_method(method_observe) # remove observed method
+      klass.remove_method(method_dump) # remove dump method
+      remove_from_observed(klass, method_name)
+    end
+
+    ##
+    # Execute block passed in #execute
+    # Parameters *klass* and *method_name* passing to block call
+    #
+    # ==== Parameters
+    # * +klass+ [Class] - Klass owner of observed method
+    # * +method+ [Class] - Name of observed method
+    #
+    # ===== Raise
+    # +ExecuteBlockWasNotDefined+ - when block was not passing to execute in observer class
+    ##
+    def trigger!(klass, method_name)
+      block = const_get(CONST_EXECUTION_BLOCK) rescue nil
+      raise ExecuteBlockWasNotDefined, "You must define execute block in your #{self.name}" unless block
+      block.call(klass, method_name)
+    end
+
+    ##
+    # Method for passing execution block for execution after observed method
+    ##
+    def execute(&block)
+      const_set(CONST_EXECUTION_BLOCK, block)
+    end
+
+    def observed_methods
+      @observed_method ||= []
+    end
+
+    private
+
+    def observer_method(method)
+      "#{method}_observer"
+    end
+
+    def method_dump(method)
+      "#{method}_dump"
+    end
+
+    def klass_with_method(klass, method)
+      "#{klass}##{method}"
+    end
+
+    def method_defined?(klass, method)
+      klass.instance_methods(false).include?(method.to_sym)
+    end
+
+    def add_observed(klass, method_name)
+      observed_methods << klass_with_method(klass, method_name)
+    end
+
+    def remove_from_observed(klass, method_name)
+      observed_methods.delete(klass_with_method(klass, method_name))
+    end
+
+    class ExecuteBlockWasNotDefined < StandardError; end
+  end
+end

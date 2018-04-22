@@ -1,5 +1,7 @@
 require "methodist/railtie"
-require "methodist/src/interactors/interactor"
+require 'methodist/pattern'
+require 'methodist/interactor'
+require 'methodist/observer'
 
 module Methodist
   # Your code goes here...

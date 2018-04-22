@@ -83,6 +83,8 @@ class Methodist::Interactor < Methodist::Pattern
   # validation value returning in Failure
   ##
   def validate(input)
+    input = {} unless input
+    raise InputClassError, 'If you want use custom #validate, you must pass hash to interactor' unless input.is_a?(Hash)
     schema = self.class.const_get SCHEMA_CONST rescue nil
     raise SchemaDefinitionError, 'You must define schema with #schema method' unless schema
     @validation_result = schema.call(input)
@@ -106,4 +108,5 @@ class Methodist::Interactor < Methodist::Pattern
 
 
   class SchemaDefinitionError < StandardError; end
+  class InputClassError < StandardError; end
 end

@@ -1,5 +1,5 @@
 class Hello::World < Methodist::Interactor
-  set_schema do
+  schema do
     required(:name).value(:str?)
   end
   

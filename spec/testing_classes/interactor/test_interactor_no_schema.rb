@@ -4,6 +4,6 @@ class TestInteractorNoSchema < Methodist::Interactor
 
   def say_hello
     puts 'Hello!'
-    Right(true)
+    Success(true)
   end
 end

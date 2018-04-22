@@ -18,7 +18,7 @@ class Methodist::Observer < Methodist::Pattern
     # * +skip_if+ [Proc] - Skip trigerred execution if condition true
     #
     ##
-    def observe(klass, method_name, skip_if: nil)
+    def observe(klass, method_name, skip_if: nil, &block)
       method_name = method_name.to_sym
       original_method = klass.instance_method(method_name)
       method_observe = observer_method(method_name)
@@ -34,7 +34,11 @@ class Methodist::Observer < Methodist::Pattern
         unless skip_if.nil?
           return if skip_if.call(result)
         end
-        me.trigger!(klass, method_name)
+        if block_given?
+          block.call(klass, method_name)
+        else
+          me.trigger!(klass, method_name)
+        end
         result # return result of original method
       end
 

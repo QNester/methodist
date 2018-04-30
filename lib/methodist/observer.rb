@@ -31,9 +31,9 @@ class Methodist::Observer < Methodist::Pattern
 
       return false if method_defined?(klass, method_dump)
 
-      klass.alias_method method_dump, method_name # dump method
+      klass.send(:alias_method, method_dump, method_name) # dump method
 
-      klass.define_method(method_observe) do |*args, &block|
+      klass.send(:define_method, method_observe, -> (*args, &block) do
         result = original_method.bind(self).call(*args, &block)
         unless skip_if.nil?
           return if skip_if.call(result)
@@ -44,9 +44,9 @@ class Methodist::Observer < Methodist::Pattern
           me.trigger!(klass, method_name)
         end
         result # return result of original method
-      end
+      end)
 
-      klass.alias_method method_name, method_observe # redefine original method
+      klass.send(:alias_method, method_name, method_observe) # redefine original method
       add_observed(klass, method_name)
       true
     end
@@ -63,9 +63,9 @@ class Methodist::Observer < Methodist::Pattern
       method_dump = method_dump(method_name)
       return false unless method_defined?(klass, method_observe) && method_defined?(klass, method_dump)
 
-      klass.alias_method method_name, method_dump # restore dumped method
-      klass.remove_method(method_observe) # remove observed method
-      klass.remove_method(method_dump) # remove dump method
+      klass.send(:alias_method, method_name, method_dump) # restore dumped method
+      klass.send(:remove_method, method_observe) # remove observed method
+      klass.send(:remove_method, method_dump) # remove dump method
       remove_from_observed(klass, method_name)
       true
     end

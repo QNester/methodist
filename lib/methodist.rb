@@ -1,3 +1,4 @@
+require 'active_support'
 require "methodist/railtie"
 require 'methodist/pattern'
 require 'methodist/interactor'

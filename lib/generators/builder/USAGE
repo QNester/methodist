@@ -1,0 +1,9 @@
+Description:
+    Generator for create class Builder based Methodist::Builder
+
+Example:
+    rails generate builder Thing
+
+    This will create:
+        app/builders/thing.rb
+        spec/builders/thing_spec.rb

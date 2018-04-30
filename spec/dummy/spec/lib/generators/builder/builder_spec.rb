@@ -3,7 +3,7 @@ require 'rails_helper'
 MODULE_NAME = %w[anything modulname in my life i dont wanna die and doesnt help me nothing].sample
 KLASS_NAME = %w[jhonny field summa kiddo verify kilo pender finder guava verslio create delete].sample
 
-RSpec.describe InteractorGenerator, type: :generator do
+RSpec.describe BuilderGenerator, type: :generator do
   destination File.expand_path(TMP_PATH, __FILE__)
 
   before(:each) do
@@ -17,8 +17,8 @@ RSpec.describe InteractorGenerator, type: :generator do
   context 'without options' do
     subject { run_generator(["#{MODULE_NAME}/#{KLASS_NAME}"]) }
 
-    let!(:expected_file)      { "#{TMP_PATH}/app/interactors/#{MODULE_NAME}/#{KLASS_NAME}.rb" }
-    let!(:expected_spec_file) { "#{TMP_PATH}/spec/interactors/#{MODULE_NAME}/#{KLASS_NAME}_spec.rb" }
+    let!(:expected_file)      { "#{TMP_PATH}/app/builders/#{MODULE_NAME}/#{KLASS_NAME}_builder.rb" }
+    let!(:expected_spec_file) { "#{TMP_PATH}/spec/builders/#{MODULE_NAME}/#{KLASS_NAME}_builder_spec.rb" }
 
     it 'creates interactor file' do
       subject
@@ -36,8 +36,8 @@ RSpec.describe InteractorGenerator, type: :generator do
 
     subject { run_generator(["#{MODULE_NAME}/#{KLASS_NAME}", "--path=#{CUSTOM_PATH}"]) }
 
-    let!(:expected_file)      { "#{TMP_PATH}/app/#{CUSTOM_PATH}/#{MODULE_NAME}/#{KLASS_NAME}.rb" }
-    let!(:expected_spec_file) { "#{TMP_PATH}/spec/#{CUSTOM_PATH}/#{MODULE_NAME}/#{KLASS_NAME}_spec.rb" }
+    let!(:expected_file)      { "#{TMP_PATH}/app/#{CUSTOM_PATH}/#{MODULE_NAME}/#{KLASS_NAME}_builder.rb" }
+    let!(:expected_spec_file) { "#{TMP_PATH}/spec/#{CUSTOM_PATH}/#{MODULE_NAME}/#{KLASS_NAME}_builder_spec.rb" }
 
     it 'creates interactor file in path' do
       subject
@@ -53,8 +53,8 @@ RSpec.describe InteractorGenerator, type: :generator do
   context 'with option --in-lib' do
     subject { run_generator(["#{MODULE_NAME}/#{KLASS_NAME}", "--in-lib"]) }
 
-    let!(:expected_file)      { "#{TMP_PATH}/lib/interactors/#{MODULE_NAME}/#{KLASS_NAME}.rb" }
-    let!(:expected_spec_file) { "#{TMP_PATH}/spec/lib/interactors/#{MODULE_NAME}/#{KLASS_NAME}_spec.rb" }
+    let!(:expected_file)      { "#{TMP_PATH}/lib/builders/#{MODULE_NAME}/#{KLASS_NAME}_builder.rb" }
+    let!(:expected_spec_file) { "#{TMP_PATH}/spec/lib/builders/#{MODULE_NAME}/#{KLASS_NAME}_builder_spec.rb" }
 
     it 'creates interactor file in path' do
       subject

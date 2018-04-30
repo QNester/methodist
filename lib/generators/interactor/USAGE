@@ -1,18 +1,9 @@
 Description:
-<<<<<<< HEAD
-    Explain the generator
-=======
     Generator for create class Interactor based Methodist::Interactor
->>>>>>> develop
 
 Example:
     rails generate interactor Thing
 
     This will create:
-<<<<<<< HEAD
-        what/will/it/create
-=======
         app/interactors/thing.rb
         spec/interactors/thing_spec.rb
-
->>>>>>> develop

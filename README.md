@@ -6,12 +6,11 @@
 Methodist - gem for Ruby on Rails was created for stop chaos in your buisness logic.
 This gem add to your rails application generators for some patterns:
 
-- Interactor: class for doing some complex job.
-- Observer: notification one part of application about changes in another part of application
-- Builder: build data for later convenient use
-- __[NOT REALISED]__ Service: class with methods collections (it will be pleasure in work with
+- __Interactor__: class for doing some complex job.
+- __Observer__: notification one part of application about changes in another part of application
+- __Builder__: build data for later convenient use
+- __Service__: class with methods collections (it will be pleasure in work with
 internal services).
-- __[NOT REALISED]__ Command: class for doing some small job.
  
 
 ## Installation
@@ -37,6 +36,8 @@ Just execute in terminal
 rails g <pattern_name> <generated_class>
 ```
 where _<pattern_name>_ - one of ready patterns (observer, interactor).
+
+About every methodist pattern you can read [here](https://github.com/QNester/methodist/wiki)
 
 ## Contributing
 For contribute just:

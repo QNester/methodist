@@ -33,7 +33,7 @@ class Methodist::Observer < Methodist::Pattern
 
       klass.send(:alias_method, method_dump, method_name) # dump method
 
-      klass.send(:define_method, method_observe, -> (*args, &block) do
+      observer_method_proc = -> (*args, &block) do
         result = original_method.bind(self).call(*args, &block)
         unless skip_if.nil?
           return if skip_if.call(result)
@@ -44,7 +44,9 @@ class Methodist::Observer < Methodist::Pattern
           me.trigger!(klass, method_name)
         end
         result # return the result of the original method
-      end)
+      end
+
+      klass.send(:define_method, method_observe, observer_method_proc)
 
       klass.send(:alias_method, method_name, method_observe) # redefine the original method
       add_observed(klass, method_name)

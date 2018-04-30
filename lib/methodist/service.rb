@@ -1,17 +1,16 @@
-class Methodist::Service < Pattern
+require_relative 'pattern'
+
+class Methodist::Service < Methodist::Pattern
   CONST_CLIENT = 'CLIENT'
 
   class << self
-    def client(&block)
-      const_set(CONST_CLIENT, block.call)
+    def client(client_instance)
+      const_set(CONST_CLIENT, client_instance)
     end
   end
 
-  attr_reader :client
-
-  def initializer
-    client = const_get(CONST_CLIENT) rescue nil
-    @client = client if client
+  def client
+    @client ||= self.class.const_get(CONST_CLIENT) #rescue nil
   end
 
   class ResponseError < StandardError; end

@@ -1,7 +1,7 @@
 require_relative '../methodist_generator'
 
 class ObserverGenerator < MethodistGenerator
-  desc 'Create observer'
+  desc 'Create an observer'
   source_root File.expand_path('templates', __dir__)
 
   PATTERN_FOLDER = 'observers'.freeze
@@ -9,8 +9,8 @@ class ObserverGenerator < MethodistGenerator
   TEMPLATE_SPEC_FILE = 'observer_spec.erb'.freeze
   DEFAULT_PREFIX = 'config/initializers'.freeze
 
-  class_option 'skip-validations', type: :boolean, desc: "Skip validations parts in files source", default: false
-  class_option 'path',  type: :string,  desc: "Parent module for new interactor", default: PATTERN_FOLDER
+  class_option 'skip-validations', type: :boolean, desc: "Skip validations in generated files", default: false
+  class_option 'path',  type: :string,  desc: "Parent module for new a interactor", default: PATTERN_FOLDER
 
   def generate
     template(

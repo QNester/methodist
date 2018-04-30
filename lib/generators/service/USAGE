@@ -1,5 +1,5 @@
 Description:
-    Generator for create class Service based Methodist::Service
+    Generator for creating a Service class based on Methodist::Service
 
 Example:
     rails generate builder Service

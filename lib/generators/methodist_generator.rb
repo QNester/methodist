@@ -1,8 +1,8 @@
 class MethodistGenerator < Rails::Generators::NamedBase
   DEFAULT_PREFIX = 'app'.freeze
 
-  class_option 'clean',  type: :boolean, desc: "Skip comments and annotations in files source", default: false
-  class_option 'in-lib', type: :boolean, desc: "Create file in lib path, not in app", default: false
+  class_option 'clean',  type: :boolean, desc: "Skip comments and annotations in generated files", default: false
+  class_option 'in-lib', type: :boolean, desc: "Create files in lib path, not in app", default: false
 
   private
 

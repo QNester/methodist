@@ -8,10 +8,10 @@ This gem add to your rails application generators for some patterns:
 
 - Interactor: class for doing some complex job.
 - Observer: notification one part of application about changes in another part of application
+- Builder: build data for later convenient use
 - __[NOT REALISED]__ Service: class with methods collections (it will be pleasure in work with
 internal services).
 - __[NOT REALISED]__ Command: class for doing some small job.
-- __[NOT REALISED]__ Builder: build data for later convenient use
  
 
 ## Installation

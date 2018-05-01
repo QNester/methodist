@@ -1,11 +1,11 @@
 # Methodist::Observer
-Observer - kind of centralized after hook. With observer you can know that some method in your 
-application was calling explicit indication from the method itself. 
-Observer can be useful for various notifications, counters and etc.
+Observer - a kind of centralized after-hook. With an observer you can find out that some method in your
+application was called without explicit indication from the method itself.
+Observer can be useful for various notifications, counters, etc.
 
 ### How does it work?
 
-You generate new observer:
+Generate new observer:
 ```
 rails g observer downcase
 ```
@@ -14,28 +14,27 @@ with code:
 ```ruby
 # config/initializers/observers/downcase_observer.rb
 class DowncaseObserver < Methodist::Observer
-  execute do |klass, method_name| 
+  execute do |klass, method_name|
     # your execution code here
   end
 end
 ```
-We can see method `#execute`. Here we must pass block what will be executed after our
-observed method will be call.
+The `#execute` method takes a block and executes it after calling the observed method.
 
-Let's add observing method in our code:
+Let's add the observed method:
 ```ruby
 # config/initializers/observers/downcase_observer.rb
 class DowncaseObserver < Methodist::Observer
   observe String, :downcase
 
-  execute do |klass, method_name| 
-    puts "#{klass}##{method_name} was calling!"
+  execute do |klass, method_name|
+    puts "#{klass}##{method_name} was called!"
   end
 end
 ```
 
-It located in initializing directory and will be loaded with start rails server or console.
-We will use rails console to test it. Run `rails console` and write:
+File is located in initializers directory and will be loaded right after rails server or console start.
+We will use rails console to test it. Run `rails console` and execute the following:
 ```
 str = 'WE WANT TO TEST IT'
 str.downcase
@@ -43,48 +42,49 @@ str.downcase
 #=> 'we want to test it'
 ```
 
-We can observe multiple methods, just add more `observe` to your observer class: 
+You can observe multiple methods, just add more `observe` lines in your observer class:
 ```ruby
 # config/initializers/observers/downcase_observer.rb
 class DowncaseObserver < Methodist::Observer
   observe String, :downcase
   observe String, :upcase
 
-  execute do |klass, method_name| 
-    puts "#{klass}##{method_name} was calling!"
+  execute do |klass, method_name|
+    puts "#{klass}##{method_name} was called!"
   end
 end
 ```
-You can see all observed method with `#observed_methods`
+You can list all the observed methods using `#observed_methods`
 
-In console:
+In the console:
 ```
-DowncaseObserver.observed_methods 
+DowncaseObserver.observed_methods
 #=> ["String#downcase", "String#upcase"]
 str = 'WE WANT TO TEST IT'
 str = str.downcase
-# String#downcase was calling!
+# String#downcase was called!
 #=> 'we want to test it'
 str.upcase
-# String#upcase was calling!
+# String#upcase was called!
 #=> 'WE WANT TO TEST IT'
-``` 
+```
 
-You can add condition to execution block after calling method:
+You can use conditional execution using `skip_if`:
 ```ruby
 observe String, :downcase, skip_if: -> (result) { result.length > 5 }
 ```
-`result` - result of execution observed method.
-Execute block will not invoke if string length will be more then 5.
+Where `result` is the value returned by the observed method.
+In the example above the `#execute` method won't be called because
+the value returned by the observed method satisfies the condition.
 
-You can stop observe method with `#stop_observe`:
+You can stop observation the method with `#stop_observe`:
 ```ruby
 str = 'WE WANT TO TEST IT'
 str.downcase
-# String#downcase was calling!
+# String#downcase was called!
 #> 'we want to test it'
 DowncaseObserver.stop_observe(String, :downcase)
-DowncaseObserver.observed_methods 
+DowncaseObserver.observed_methods
 #=> []
 str.downcase
 #> 'we want to test it'

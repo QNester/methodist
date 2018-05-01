@@ -1,5 +1,5 @@
 Description:
-    Generator for create class Interactor based Methodist::Interactor
+    Generator for creating a Interactor class based on Methodist::Interactor
 
 Example:
     rails generate interactor Thing

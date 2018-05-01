@@ -1,5 +1,5 @@
 Description:
-    Generate new observer
+    Generate a new observer
 
 Example:
     rails generate observer Notification

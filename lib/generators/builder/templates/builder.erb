@@ -1,10 +1,10 @@
 <%- unless options['clean'] -%>
-# See docs to understand how to use builder:
+# See docs to understand how to use a builder:
 # https://github.com/QNester/methodist/tree/master/docs/builder.md
 <% end -%>
 class <%= name.camelcase %>Builder < Methodist::Builder
   <%- unless options['clean'] -%>
-  # Use `field` method to define builder attribute.
+  # Use `field` method to define a builder attribute.
   # Example: field :title, ->(val) { val.is_a?(String) }
   <%- end -%>
 end

@@ -1,6 +1,6 @@
 ##
 # == Methodist::Observer
-# Base class for methodist observers
+# Base class for Methodist observers
 #
 #
 class Methodist::Observer < Methodist::Pattern
@@ -8,18 +8,18 @@ class Methodist::Observer < Methodist::Pattern
 
   class << self
     ##
-    # Subscribe instance method of klass for observe
+    # Subscribe to the instance method of the klass to observe
     #
     # ==== Parameters
-    # * +klass+ [Class] - Owner of method for observe
-    # * +method_name+ [String/Symbol] - Method name for observe
+    # * +klass+ [Class] - The owner of the method for observation
+    # * +method_name+ [String/Symbol] - Observation method name
     #
     # ===== Options
-    # * +skip_if+ [Proc] - Skip trigerred execution if condition true
+    # * +skip_if+ [Proc] - Skip triggered execution if condition is true
     #
     # ==== Yield
     # main_block - execution block. If this block was passed,
-    # `#execute` block will be ignore
+    # `#execute` block will be ignored
     #
     ##
     def observe(klass, method_name, skip_if: nil, &main_block)
@@ -43,22 +43,22 @@ class Methodist::Observer < Methodist::Pattern
         else
           me.trigger!(klass, method_name)
         end
-        result # return result of original method
+        result # return the result of the original method
       end
 
       klass.send(:define_method, method_observe, observer_method_proc)
 
-      klass.send(:alias_method, method_name, method_observe) # redefine original method
+      klass.send(:alias_method, method_name, method_observe) # redefine the original method
       add_observed(klass, method_name)
       true
     end
 
     ##
-    # Stop observe instance method of klass for observe
+    # Stop observation instance method of klass for observe
     #
     # ==== Parameters
-    # * +klass+ [Class] - Klass owner of observed method
-    # * +method_name+ [String/Symbol] - Name of observed method
+    # * +klass+ [Class] - Klass owner of the observed method
+    # * +method_name+ [String/Symbol] - Name of the observed method
     ##
     def stop_observe(klass, method_name)
       method_observe = observer_method(method_name)
@@ -73,15 +73,15 @@ class Methodist::Observer < Methodist::Pattern
     end
 
     ##
-    # Execute block passed in #execute
-    # Parameters *klass* and *method_name* passing to block call
+    # The executable block is passed to #execute
+    # Parameters *klass* and *method_name* are passed to block call
     #
     # ==== Parameters
-    # * +klass+ [Class] - Klass owner of observed method
-    # * +method+ [Class] - Name of observed method
+    # * +klass+ [Class] - Klass owner of the observed method
+    # * +method+ [Class] - Name of the observed method
     #
     # ===== Raise
-    # +ExecuteBlockWasNotDefined+ - when block was not passing to execute in observer class
+    # +ExecuteBlockWasNotDefined+ - when no block was passed to the execute method in the observer class
     ##
     def trigger!(klass, method_name)
       block = const_get(CONST_EXECUTION_BLOCK) rescue nil

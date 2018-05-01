@@ -95,6 +95,6 @@ class Methodist::Builder < Methodist::Pattern
   private
 
   def get_proc(attr_name)
-    self.class.const_get(self.class.proc_const_name(attr_name))# rescue nil
+    self.class.const_get(self.class.proc_const_name(attr_name)) # rescue nil
   end
 end

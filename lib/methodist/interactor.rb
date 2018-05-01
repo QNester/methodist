@@ -3,7 +3,7 @@ require "dry/validation"
 
 ##
 # == Methodist::Interactor
-# Base class for methodist interactor.
+# Base class for a Methodist interactor.
 #
 # Methodist::Interactor dependency from dry-rb transactions and dry-rb validations
 #
@@ -17,9 +17,9 @@ class Methodist::Interactor < Methodist::Pattern
 
   class << self
     ##
-    # Method set Dry::Validation schema for interactor.
+    # Method set Dry::Validation schema for an interactor.
     #
-    # Receive block for generate Dry::Validation schema
+    # Receive block for generating Dry::Validation schema
     # result.
     #
     #   class InteractorClass < Methodist::Interactor
@@ -48,7 +48,7 @@ class Methodist::Interactor < Methodist::Pattern
   end
 
   ##
-  # Method for validate input to interactor parameters.
+  # Method for validation input of interactor parameters.
   #
   # ==== Parameters
   # * +input+ [Hash] - parameters for interactor
@@ -75,18 +75,18 @@ class Methodist::Interactor < Methodist::Pattern
   # * +Dry::Monads::Result::Failure+  - failure result of interactor step
   #
   # ==== Raise
-  # * +SchemaDefinitionError+  - raise if method was calling without schema definition
+  # * +SchemaDefinitionError+  - raise if method was called without a schema definition
   #
   #
   # ==== Attention
-  # You can redefine failure_validation_value for custom
-  # validation value returning in Failure
+  # You can redefine failure_validation_value for a custom
+  # value returning in case of validation Failure
   ##
   def validate(input)
     input = {} unless input
-    raise InputClassError, 'If you want use custom #validate, you must pass hash to interactor' unless input.is_a?(Hash)
+    raise InputClassError, 'If you want to use custom #validate, you have to pass a hash to an interactor' unless input.is_a?(Hash)
     schema = self.class.const_get SCHEMA_CONST rescue nil
-    raise SchemaDefinitionError, 'You must define schema with #schema method' unless schema
+    raise SchemaDefinitionError, 'You have to define a schema with #schema method' unless schema
     @validation_result = schema.call(input)
     return Success(validation_result.to_h) if validation_result.success?
     Failure(failure_validation_value)
@@ -95,7 +95,7 @@ class Methodist::Interactor < Methodist::Pattern
   private
 
   ##
-  # Method for validate input to interactor parameters.
+  # Method for validation input of interactor parameters.
   ##
   def failure_validation_value
     field = validation_result.errors.keys.first

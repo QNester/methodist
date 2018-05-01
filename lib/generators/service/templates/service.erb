@@ -1,10 +1,10 @@
 <%- unless options['clean'] -%>
-# See docs to understand how to use service:
+# See docs to learn how to use service:
 # https://github.com/QNester/methodist/tree/master/docs/service.md
 <% end -%>
 class <%= name.camelcase %>Service < Methodist::Service
   <%- unless options['clean'] -%>
-  # Use `client` method to define your client.
+  # Use the `client` method to define your client.
   # Example: client Redis.new(Settings.redis.to_hash)
   <%- end -%>
 end

@@ -1,5 +1,5 @@
 Description:
-    Generator for create class Builder based Methodist::Builder
+    Generator for creating a Builder class based on Methodist::Builder
 
 Example:
     rails generate builder Thing

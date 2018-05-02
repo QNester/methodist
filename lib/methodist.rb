@@ -7,5 +7,4 @@ require 'methodist/builder'
 require 'methodist/service'
 
 module Methodist
-  # Your code goes here...
 end

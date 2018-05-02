@@ -9,12 +9,12 @@ RSpec.describe Methodist::Builder do
     end
 
     describe '#attr_accessor' do
-      subject { described_class.attr_accessor :test_field, :world }
+      subject { described_class.attr_accessor :test_field }
 
       it 'add attrs to attributes' do
         subject
-        expect(described_class.attributes).to eq([:test_field, :world])
-        expect(described_class.attrs).to eq([:test_field, :world])
+        expect(described_class.attributes).to eq([:test_field])
+        expect(described_class.attrs).to eq([:test_field])
       end
     end
 

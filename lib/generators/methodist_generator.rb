@@ -15,4 +15,8 @@ class MethodistGenerator < Rails::Generators::NamedBase
     name = name_as_arr.last
     "#{prefix}/#{options['path']}/#{path}/#{name}"
   end
+
+  def rspec_used?
+    defined?(RSpec)
+  end
 end

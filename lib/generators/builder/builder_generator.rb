@@ -18,6 +18,7 @@ class BuilderGenerator < MethodistGenerator
   end
 
   def generate_spec
+    return unless rspec_used?
     template(
       TEMPLATE_SPEC_FILE,
       "#{filename_with_path(prefix: 'spec')}_builder_spec.rb"

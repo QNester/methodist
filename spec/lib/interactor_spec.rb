@@ -26,8 +26,8 @@ RSpec.describe Methodist::Interactor do
       it { expect(subject).to be_failure }
 
       it 'correct result value' do
-        expect(subject.value[:error]).to eq('ValidationError')
-        expect(subject.value[:field].to_sym).to eq(:name)
+        expect(subject.failure[:error]).to eq('ValidationError')
+        expect(subject.failure[:field].to_sym).to eq(:name)
       end
     end
   end

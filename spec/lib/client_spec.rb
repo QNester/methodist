@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe Methodist::Service do
+RSpec.describe Methodist::Client do
   let!(:expected_client) { String.new }
 
   describe '#client' do

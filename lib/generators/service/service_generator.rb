@@ -1,6 +1,6 @@
 require_relative '../methodist_generator'
 
-class ClientGenerator < MethodistGenerator
+class ServiceGenerator < MethodistGenerator
   desc 'Create service'
   source_root File.expand_path('templates', __dir__)
 

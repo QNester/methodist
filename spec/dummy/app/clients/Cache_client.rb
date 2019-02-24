@@ -1,10 +1,6 @@
-<%- unless options['clean'] -%>
 # See docs to learn how to use client:
 # https://github.com/QNester/methodist/tree/master/docs/client.md
-<% end -%>
-class <%= name.camelcase %>Client < Methodist::Client
-  <%- unless options['clean'] -%>
+class CacheClient < Methodist::Client
   # Use the `client` method to define your client.
   # Example: client Redis.new(Settings.redis.to_hash)
-  <%- end -%>
 end

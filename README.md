@@ -6,10 +6,15 @@
 Methodist - a gem for Ruby on Rails created to stop chaos in your buisness logic.
 This gem adds generators to your rails application using some patterns:
 
-- __Interactor__: a class for doing some complex job.
+- __Interactor__: a class for doing some complex job step by step.
 - __Observer__: notifies one part of an application about changes in another part of an application.
 - __Builder__: is used to create an object with complex configuration (including your business logic, validation etc.)
-- __Service__: a class with collection of methods. Useful when using internal services.
+- __Client__: a class with implements methods for external services (databases, APIs and etc). 
+For example, class called TelegramApiClient will implement methods fot HTTP requests to 
+telegram API.
+- __Service__: a class which encapsulates some business logic in semantic module. 
+For example, class called NotificationService - implement methods for notifications. 
+Or CacheService - implement methods for caching. 
 
 
 ## Installation

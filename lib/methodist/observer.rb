@@ -4,9 +4,9 @@
 #
 #
 class Methodist::Observer < Methodist::Pattern
-  CONST_EXECUTION_BLOCK = 'EXEC_BLOCK'.freeze
-
   class << self
+    attr_reader :execution_block
+
     ##
     # Subscribe to the instance method of the klass to observe
     #
@@ -99,7 +99,7 @@ class Methodist::Observer < Methodist::Pattern
     # +ExecuteBlockWasNotDefined+ - when no block was passed to the execute method in the observer class
     ##
     def trigger!(klass, method_name, result, *args)
-      block = const_get(CONST_EXECUTION_BLOCK) rescue nil
+      block = execution_block rescue nil
       raise ExecuteBlockWasNotDefined, "You must define execute block in your #{self.name}" unless block
       block.call(klass, method_name, result, *args)
     end
@@ -108,7 +108,7 @@ class Methodist::Observer < Methodist::Pattern
     # Method for passing execution block for execution after observed method
     ##
     def execute(&block)
-      const_set(CONST_EXECUTION_BLOCK, block)
+      @execution_block = block
     end
 
     def observed_methods

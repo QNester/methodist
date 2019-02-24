@@ -1,5 +1,10 @@
 require_relative 'pattern'
 
+##
+# == Methodist::Observer
+# Base class for Methodist clients
+#
+#
 class Methodist::Client < Methodist::Pattern
   attr_reader :client
 

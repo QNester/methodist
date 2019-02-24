@@ -1,18 +1,13 @@
 require_relative 'pattern'
 
 class Methodist::Client < Methodist::Pattern
-  CONST_CLIENT = 'CLIENT'
+  attr_reader :client
 
   class << self
-    ##
-    # Define client for client
-    #
-    # ==== Parameters
-    # * +client_instance+ [Instance of client klass] - Instance of client class.
-    # It could be different clients like redis, elastic, internal api etc.
-    ##
-    def client(client_instance)
-      const_set(CONST_CLIENT, client_instance)
+    attr_reader :base_client
+
+    def client(base_client)
+      @base_client = base_client
     end
   end
 
@@ -20,7 +15,7 @@ class Methodist::Client < Methodist::Pattern
   # Instance method use to get defined client
   ##
   def client
-    @client ||= self.class.const_get(CONST_CLIENT) #rescue nil
+    @client ||= self.class.base_client
   end
 
   class ResponseError < StandardError; end

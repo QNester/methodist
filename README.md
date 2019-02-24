@@ -9,8 +9,12 @@ This gem adds generators to your rails application using some patterns:
 - __Interactor__: a class for doing some complex job step by step.
 - __Observer__: notifies one part of an application about changes in another part of an application.
 - __Builder__: is used to create an object with complex configuration (including your business logic, validation etc.)
-- __Client__: a class with implements methods for external services (databases, APIs and etc).
-- __Service__: a class which encapsulates some business logic in a separate semantic module. For example, notification_service.
+- __Client__: a class with implements methods for external services (databases, APIs and etc). 
+For example, class called TelegramApiClient will implement methods fot HTTP requests to 
+telegram API.
+- __Service__: a class which encapsulates some business logic in semantic module. 
+For example, class called NotificationService - implement methods for notifications. 
+Or CacheService - implement methods for caching. 
 
 
 ## Installation

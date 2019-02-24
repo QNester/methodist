@@ -1,0 +1,9 @@
+Description:
+    Generator for creating a Client class based on Methodist::Client
+
+Example:
+    rails generate client Client
+
+    This will create:
+        app/clients/client.rb
+        spec/clients/client_spec.rb

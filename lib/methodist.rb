@@ -4,7 +4,7 @@ require 'methodist/pattern'
 require 'methodist/interactor'
 require 'methodist/observer'
 require 'methodist/builder'
-require 'methodist/service'
+require 'methodist/client'
 
 module Methodist
 end

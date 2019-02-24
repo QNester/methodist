@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Gem for Ruby on Rails created to stop chaos in your buisness logic.'
   s.description = 'Methodist - a gem for Ruby on Rails created to stop chaos in your business logic. ' +
     'This gem adds generators to your rails application using some patterns: interactor, ' +
-      "builder, observer and service. Just use `rails g <pattern> <new_class_name>`. \n" +
+      "builder, observer and client. Just use `rails g <pattern> <new_class_name>`. \n" +
     'Docs: https://github.com/QNester/methodist/wiki'
   s.license     = 'MIT'
 

@@ -1,9 +1,0 @@
-Description:
-    Generator for creating a Service class based on Methodist::Service
-
-Example:
-    rails generate builder Service
-
-    This will create:
-        app/builders/service.rb
-        spec/builders/service_spec.rb

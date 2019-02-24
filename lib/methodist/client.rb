@@ -1,11 +1,11 @@
 require_relative 'pattern'
 
-class Methodist::Service < Methodist::Pattern
+class Methodist::Client < Methodist::Pattern
   CONST_CLIENT = 'CLIENT'
 
   class << self
     ##
-    # Define client for service
+    # Define client for client
     #
     # ==== Parameters
     # * +client_instance+ [Instance of client klass] - Instance of client class.

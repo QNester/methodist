@@ -9,7 +9,7 @@ This gem adds generators to your rails application using some patterns:
 - __Interactor__: a class for doing some complex job.
 - __Observer__: notifies one part of an application about changes in another part of an application.
 - __Builder__: is used to create an object with complex configuration (including your business logic, validation etc.)
-- __Service__: a class with collection of methods. Useful when using internal services.
+- __Client__: a class with collection of methods for external services (databases, APIs and etc). 
 
 
 ## Installation

@@ -12,3 +12,4 @@ spec/dummy/tmp/
 .ruby-version
 
 methodist-*.gem
+Gemfile.lock

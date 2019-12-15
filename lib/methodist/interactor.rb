@@ -15,7 +15,7 @@ class Methodist::Interactor < Methodist::Pattern
   attr_accessor :validation_result
 
   class << self
-    attr_reader :input_schema
+    attr_reader :input_schema, :contract_class
     ##
     # Method set Dry::Validation schema for an interactor.
     #
@@ -44,6 +44,55 @@ class Methodist::Interactor < Methodist::Pattern
       else
         raise SchemaDefinitionError, 'You must pass block to `schema`'
       end
+    end
+
+    ##
+    # ATTENTION: require dry-validation >= 1.0.0
+    # Method set Dry::Validation::Contract contract for an interactor.
+    #
+    # Receive block for generating Dry::Validation:Contract
+    # result.
+    #
+    #   class InteractorClass < Methodist::Interactor
+    #     contract do
+    #       params do
+    #         required(:name).value(:str?)
+    #       end
+    #
+    #       rule(:name) do
+    #          ...
+    #       end
+    #     end
+    #
+    #     step :validate
+    #   end
+    #
+    #   InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
+    #
+    # Or you can pass contract class:
+    #   class InteractorClass < Methodist::Interactor
+    #     contract contract_class: MyContract
+    #
+    #     step :validate
+    #   end
+    #
+    # ==== See
+    # http://dry-rb.org/gems/dry-validation/
+    #
+    # https://github.com/dry-rb/dry-transaction
+    ##
+    def contract(contract_class: nil, &block)
+      unless new_dry_validation?
+        raise DryValidationVersionError,
+          "Your depended dry-validation gem version must be gteq #{NEW_DRY_VALIDATION_V}"
+      end
+
+      unless block_given? || contract_class
+        raise ContractDefinitionError, 'You must pass block or contract_class to `contract`'
+      end
+
+      @contract_class = contract_class
+      @contract_class ||= Class.new(Dry::Validation::Contract, &block)
     end
 
     private
@@ -96,8 +145,9 @@ class Methodist::Interactor < Methodist::Pattern
   def validate(input)
     input = {} unless input
     raise InputClassError, 'If you want to use custom #validate, you have to pass a hash to an interactor' unless input.is_a?(Hash)
-    raise SchemaDefinitionError, 'You have to define a schema with #schema method' unless input_schema
-    @validation_result = input_schema.call(input)
+    validator = contract_class ? contract_class : input_schema
+    raise ValidatorDefinitionError, 'you must define schema via #schema OR define contract via #contract' unless validator
+    @validation_result = validator.call(input)
     return Success(validation_result.to_h) if validation_result.success?
     Failure(failure_validation_value)
   end
@@ -106,6 +156,10 @@ class Methodist::Interactor < Methodist::Pattern
 
   def input_schema
     @input_schema ||= self.class.input_schema rescue nil
+  end
+
+  def contract_class
+    @contract_class ||= self.class.contract_class.new rescue nil
   end
 
   ##
@@ -120,6 +174,8 @@ class Methodist::Interactor < Methodist::Pattern
     }
   end
 
-  class SchemaDefinitionError < StandardError; end
+  class ValidatorDefinitionError < StandardError; end
   class InputClassError < StandardError; end
+  class DryValidationVersionError < StandardError; end
+  class ContractDefinitionError < StandardError; end
 end

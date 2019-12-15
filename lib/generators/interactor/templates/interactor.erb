@@ -2,7 +2,7 @@
 # Methodist interactors use dry-transaction.
 # Check docs here: https://github.com/dry-rb/dry-transaction
 <% end -%>
-class <%= name.camelcase %> < Methodist::Interactor
+class <%= name.camelcase %> < <%= options['parent'] %>
   <% unless options['skip-validations'] %>
   # See here the syntax for validation http://dry-rb.org/gems/dry-validation/
   schema do

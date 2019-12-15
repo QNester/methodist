@@ -7,8 +7,10 @@ class BuilderGenerator < MethodistGenerator
   PATTERN_FOLDER     = 'builders'.freeze
   TEMPLATE_FILE      = 'builder.erb'.freeze
   TEMPLATE_SPEC_FILE = 'builder_spec.erb'.freeze
+  PARENT_CLASS       = 'Methodist::Builder'.freeze
 
   class_option 'path',  type: :string,  desc: "Parent module for a new builder", default: PATTERN_FOLDER
+  class_option 'parent', type: :string, desc: "Parent class of generated class", default: PARENT_CLASS
 
   def generate
     template(

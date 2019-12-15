@@ -7,8 +7,10 @@ class ServiceGenerator < MethodistGenerator
   PATTERN_FOLDER     = 'services'.freeze
   TEMPLATE_FILE      = 'service.erb'.freeze
   TEMPLATE_SPEC_FILE = 'service_spec.erb'.freeze
+  PARENT_CLASS       = 'Methodist::Service'.freeze
 
   class_option 'path',  type: :string,  desc: "Parent module for a new service", default: PATTERN_FOLDER
+  class_option 'parent', type: :string, desc: "Parent class of generated class", default: PARENT_CLASS
 
   def generate
     template(

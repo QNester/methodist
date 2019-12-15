@@ -8,9 +8,11 @@ class ObserverGenerator < MethodistGenerator
   TEMPLATE_FILE = 'observer.erb'.freeze
   TEMPLATE_SPEC_FILE = 'observer_spec.erb'.freeze
   DEFAULT_PREFIX = 'config/initializers'.freeze
+  PARENT_CLASS   = 'Methodist::Observer'.freeze
 
   class_option 'skip-validations', type: :boolean, desc: "Skip validations in generated files", default: false
   class_option 'path',  type: :string,  desc: "Parent module for new a interactor", default: PATTERN_FOLDER
+  class_option 'parent', type: :string, desc: "Parent class of generated class", default: PARENT_CLASS
 
   def generate
     template(

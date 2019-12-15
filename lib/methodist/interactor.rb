@@ -10,6 +10,7 @@ require "dry/validation"
 #
 class Methodist::Interactor < Methodist::Pattern
   include Dry::Transaction
+  NEW_DRY_VALIDATION_V = '1.0.0'.freeze
 
   attr_accessor :validation_result
 
@@ -39,10 +40,21 @@ class Methodist::Interactor < Methodist::Pattern
     ##
     def schema(&block)
       if block_given?
-        @input_schema = Dry::Validation.Schema(&block)
+        @input_schema = dry_schema(&block)
       else
         raise SchemaDefinitionError, 'You must pass block to `schema`'
       end
+    end
+
+    private
+
+    def dry_schema(&block)
+      return Dry::Schema.Params(&block) if new_dry_validation?
+      Dry::Validation.Schema(&block)
+    end
+
+    def new_dry_validation?
+      Gem.loaded_specs['dry-validation'].version.to_s >= NEW_DRY_VALIDATION_V
     end
   end
 
@@ -100,14 +112,13 @@ class Methodist::Interactor < Methodist::Pattern
   # Method for validation input of interactor parameters.
   ##
   def failure_validation_value
-    field = validation_result.errors.keys.first
+    field = validation_result.errors.to_hash.keys.first
     {
       error: 'ValidationError',
       field: field,
       reason: "#{field}: #{validation_result.errors[field].first}"
     }
   end
-
 
   class SchemaDefinitionError < StandardError; end
   class InputClassError < StandardError; end

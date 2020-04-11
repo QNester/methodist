@@ -6,6 +6,7 @@ RSpec.describe Methodist::Builder do
   describe 'class methods' do
     it 'has instance method #valid?' do
       Methodist::Builder.instance_methods.include?(:valid?)
+      Methodist::Builder.instance_methods.include?(:valid_attr?)
     end
 
     describe '#attr_accessor' do
@@ -30,6 +31,57 @@ RSpec.describe Methodist::Builder do
         subject
         expect(described_class.const_get('VALIDATION_PROC_TEST_FIELD')).to be_truthy
         expect(described_class.const_get('VALIDATION_PROC_TEST_FIELD')).to be_instance_of(Proc)
+      end
+
+      context 'with default' do
+        let!(:default_value) { 'DEFAULT_VAL' }
+        let!(:instance) { described_class.new }
+        subject { described_class.field :test_field, -> (value) { value.is_a?(String) }, default: default_value }
+
+        context 'field was set' do
+          context 'value is valid' do
+            before { instance.test_field = set_value }
+            let!(:set_value) { 'SET_VAL' }
+
+            it 'returns set value' do
+              subject
+              expect(instance.public_send(:test_field)).to eq(set_value)
+            end
+          end
+
+          context 'value is invalid' do
+            let!(:set_value) { {} }
+            context 'without raise_invalid' do
+              it 'returns default value' do
+                subject
+                instance.test_field = set_value
+                expect(instance.public_send(:test_field)).to eq(default_value)
+              end
+            end
+
+            context 'pass raise_invalid true' do
+              subject do
+                described_class.field(:test_field,
+                  ->(value) { value.is_a?(String) },
+                  default: default_value,
+                  raise_invalid: true
+                )
+              end
+
+              it 'raise InvalidValueError in setting field' do
+                subject
+                expect { instance.test_field = set_value }.to raise_error(described_class::InvalidValueError)
+              end
+            end
+          end
+        end
+
+        context 'field was not set' do
+          it 'returns default value' do
+            subject
+            expect(instance.public_send(:test_field)).to eq(default_value)
+          end
+        end
       end
     end
   end

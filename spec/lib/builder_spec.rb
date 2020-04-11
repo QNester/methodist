@@ -20,6 +20,7 @@ RSpec.describe Methodist::Builder do
     end
 
     describe '#field' do
+      let!(:instance) { described_class.new }
       subject { described_class.field :test_field, -> (value) { value.is_a?(String) } }
 
       it 'add attrs to attributes array' do
@@ -33,9 +34,23 @@ RSpec.describe Methodist::Builder do
         expect(described_class.const_get('VALIDATION_PROC_TEST_FIELD')).to be_instance_of(Proc)
       end
 
+      context 'with prepare' do
+        let!(:set_value) { 'TEST_VALUE'.upcase }
+        subject do
+          described_class.field :test_field,
+            -> (value) { value.is_a?(String) },
+            prepare: ->(val) { val.downcase }
+        end
+
+        it 'apply prepare block for value' do
+          subject
+          instance.test_field = set_value
+          expect(instance.test_field).to eq(set_value.downcase)
+        end
+      end
+
       context 'with default' do
         let!(:default_value) { 'DEFAULT_VAL' }
-        let!(:instance) { described_class.new }
         subject { described_class.field :test_field, -> (value) { value.is_a?(String) }, default: default_value }
 
         context 'field was set' do

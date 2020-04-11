@@ -66,6 +66,7 @@ class Methodist::Builder < Methodist::Pattern
       set_proc_to_const(proc, attr_name) if proc
 
       define_method("#{attr_name}=") do |val|
+        val = options[:prepare].call(val) if options[:prepare]
         instance_variable_set("@#{attr_name}".to_sym, val)
         return val if valid_attr?(attr_name)
         instance_variable_set("@#{attr_name}".to_sym, nil)

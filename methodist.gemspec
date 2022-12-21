@@ -17,12 +17,12 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  s.add_dependency 'rails', '>= 5.2'
+  s.add_dependency 'rails', '>= 6.1'
   s.add_dependency 'dry-validation', '>= 0.13'
-  s.add_dependency 'dry-transaction', '~> 0.13'
+  s.add_dependency 'dry-transaction', '~> 0.15'
 
   s.add_development_dependency 'sqlite3', '~> 1.3'
-  s.add_development_dependency 'rspec-rails', '~> 3.7'
+  s.add_development_dependency 'rspec-rails', '~> 4.1'
   s.add_development_dependency 'generator_spec', '~> 0.9'
   s.add_development_dependency 'ffaker', '~> 2.9'
 end

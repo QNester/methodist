@@ -18,9 +18,10 @@ class Methodist::Builder < Methodist::Pattern
     # will returns true then #valid_attr? will returns true.
     #
     ##
-    def field(attr_name, proc = nil)
+    def field(attr_name, proc = nil, **options)
       attr_accessor(attr_name)
-      set_proc_to_const(proc, attr_name) if proc
+      define_read_method_with_default(attr_name, options[:default])
+      define_write_method(attr_name, proc, options)
     end
 
     ##
@@ -44,12 +45,36 @@ class Methodist::Builder < Methodist::Pattern
 
     alias_method :attrs, :attributes
 
+    def proc_const_name(attr_name)
+      "VALIDATION_PROC_#{attr_name.upcase}"
+    end
+
+    private
+
     def set_proc_to_const(proc, attr_name)
       const_set(proc_const_name(attr_name), proc)
     end
 
-    def proc_const_name(attr_name)
-      "VALIDATION_PROC_#{attr_name.upcase}"
+    def define_read_method_with_default(attr_name, default_val)
+      define_method(attr_name) do
+        res = instance_variable_get("@#{attr_name}".to_sym)
+        res.nil? ? default_val : res
+      end
+    end
+
+    def define_write_method(attr_name, proc, options)
+      set_proc_to_const(proc, attr_name) if proc
+
+      define_method("#{attr_name}=") do |val|
+        val = options[:prepare].call(val) if options[:prepare]
+        instance_variable_set("@#{attr_name}".to_sym, val)
+        return val if valid_attr?(attr_name)
+        instance_variable_set("@#{attr_name}".to_sym, nil)
+
+        raise InvalidValueError, "Value #{val} is not valid for your validation." if options[:raise_invalid]
+
+        nil
+      end
     end
   end
 
@@ -97,4 +122,6 @@ class Methodist::Builder < Methodist::Pattern
   def get_proc(attr_name)
     self.class.const_get(self.class.proc_const_name(attr_name)) # rescue nil
   end
+
+  class InvalidValueError < StandardError; end
 end

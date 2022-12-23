@@ -1,0 +1,24 @@
+interface _ValidationClass
+  def call: (RBS::Types::Bases::Any input) -> untyped
+end
+
+interface _SuccessResult
+  def to_h: () -> Hash[keyable, untyped]
+
+  def success?: () -> true
+
+  def failure?: () -> false
+end
+
+interface _ValidationResultErrors
+  def to_hash: () -> Hash[keyable, untyped]
+  def []: (String field) -> untyped
+end
+
+interface _FailureResult
+  def errors: () -> _ValidationResultErrors
+
+  def success?: () -> true
+
+  def failure?: () -> false
+end

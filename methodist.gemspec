@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '>= 6.1'
   s.add_dependency 'dry-validation', '>= 0.13'
   s.add_dependency 'dry-transaction', '~> 0.15'
+  s.add_dependency 'rbs', '~> 2.8.2'
 
   s.add_development_dependency 'sqlite3', '~> 1.3'
   s.add_development_dependency 'rspec-rails', '~> 4.1'

@@ -145,8 +145,10 @@ class Methodist::Interactor < Methodist::Pattern
   def validate(input)
     input = {} unless input
     raise InputClassError, 'If you want to use custom #validate, you have to pass a hash to an interactor' unless input.is_a?(Hash)
+
     validator = contract_class ? contract_class : input_schema
     raise ValidatorDefinitionError, 'you must define schema via #schema OR define contract via #contract' unless validator
+
     @validation_result = validator.call(input)
     return Success(validation_result.to_h) if validation_result.success?
     Failure(failure_validation_value)
@@ -178,4 +180,5 @@ class Methodist::Interactor < Methodist::Pattern
   class InputClassError < StandardError; end
   class DryValidationVersionError < StandardError; end
   class ContractDefinitionError < StandardError; end
+  class SchemaDefinitionError < StandardError; end
 end

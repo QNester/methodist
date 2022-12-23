@@ -1,0 +1,151 @@
+#
+# == Methodist::Interactor
+# Base class for a Methodist interactor.
+#
+# Methodist::Interactor dependency from dry-rb transactions and dry-rb validations
+#
+#
+class Methodist::Interactor < Methodist::Pattern
+  include Dry::Transaction
+  @input_schema: _ValidationClass
+  @contract_class: _ValidationClass
+
+  NEW_DRY_VALIDATION_V: "1.0.0"
+
+  attr_accessor validation_result: Hash[(Symbol | String), untyped]
+  attr_reader self.input_schema: Dry::Validation::Schema
+  attr_reader self.contract_class: _ValidationClass
+
+  #
+  # Method set Dry::Validation schema for an interactor.
+  #
+  # Receive block for generating Dry::Validation schema
+  # result.
+  #
+  #   class InteractorClass < Methodist::Interactor
+  #     schema do
+  #       required(:name).value(:str?)
+  #     end
+  #
+  #     step :validate
+  #   end
+  #
+  #   InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
+  #
+  #
+  # ==== See
+  # http://dry-rb.org/gems/dry-validation/
+  #
+  # https://github.com/dry-rb/dry-transaction
+  #
+  def self.schema: () ?{ () -> untyped } -> void
+
+  #
+  # ATTENTION: require dry-validation >= 1.0.0
+  # Method set Dry::Validation::Contract contract for an interactor.
+  #
+  # Receive block for generating Dry::Validation:Contract
+  # result.
+  #
+  #   class InteractorClass < Methodist::Interactor
+  #     contract do
+  #       params do
+  #         required(:name).value(:str?)
+  #       end
+  #
+  #       rule(:name) do
+  #          ...
+  #       end
+  #     end
+  #
+  #     step :validate
+  #   end
+  #
+  #   InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
+  #
+  # Or you can pass contract class:
+  #   class InteractorClass < Methodist::Interactor
+  #     contract contract_class: MyContract
+  #
+  #     step :validate
+  #   end
+  #
+  # ==== See
+  # http://dry-rb.org/gems/dry-validation/
+  #
+  # https://github.com/dry-rb/dry-transaction
+  #
+  def self.contract: (?contract_class: _ValidationClass?) ?{ () -> untyped } -> void
+
+  private
+
+  def self.dry_schema: () ?{ () -> untyped } -> Dry::Validation::Schema
+
+  def self.new_dry_validation?: () -> bool
+
+  public
+
+  #
+  # Method for validation input of interactor parameters.
+  #
+  # ==== Parameters
+  # * +input+ [Hash] - parameters for interactor
+  #
+  # ==== Example
+  #
+  #   # app/interactors/interactor_class.rb
+  #   class InteractorClass < Methodist::Interactor
+  #     schema do
+  #       required(:name).value(:str?)
+  #     end
+  #
+  #     step :validate
+  #   end
+  #
+  #   # your controller action
+  #   def create
+  #     result = InteractorClass.new.call(name: nil) #=> Failure(ValidationError)
+  #     raise InteractorError, result.value if result.failure?
+  #   end
+  #
+  # ==== Return
+  # * +Dry::Monads::Result::Success+ - success result of interactor step
+  # * +Dry::Monads::Result::Failure+  - failure result of interactor step
+  #
+  # ==== Raise
+  # * +SchemaDefinitionError+  - raise if method was called without a schema definition
+  #
+  #
+  # ==== Attention
+  # You can redefine failure_validation_value for a custom
+  # value returning in case of validation Failure
+  #
+  def validate: (untyped input) -> (_SuccessResult | _FailureResult)
+
+  private
+
+  def input_schema: () -> _ValidationClass
+
+  def contract_class: () -> _ValidationClass
+
+  #
+  # Method for validation input of interactor parameters.
+  #
+  # redefine it to make a custom failure structure
+  def failure_validation_value: () -> { error: "ValidationError", field: keyable, reason: String }
+
+  class ValidatorDefinitionError < StandardError
+  end
+
+  class InputClassError < StandardError
+  end
+
+  class DryValidationVersionError < StandardError
+  end
+
+  class ContractDefinitionError < StandardError
+  end
+
+  class SchemaDefinitionError < StandardError
+  end
+end

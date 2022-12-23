@@ -1,0 +1,23 @@
+module Dry
+end
+
+class Dry::Monads
+end
+
+class Dry::Monads::Result
+end
+
+class Dry::Monads::Result::Success
+end
+
+class Dry::Monads::Result::Failure
+end
+
+class Dry::Validation
+end
+
+module Dry::Transaction
+end
+
+class Dry::Validation::Schema
+end

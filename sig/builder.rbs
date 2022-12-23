@@ -1,0 +1,52 @@
+class Methodist::Builder < Methodist::Pattern
+  def self.attr_accessor: (*keyable args) -> void
+
+  # Define attribute and set validation for value
+  def self.field: (keyable attr_name, ^(untyped) -> bool, **untyped options) -> void
+
+  # Define multiple attributes and set validation for values
+  def self.fields: (*keyable attr_names) ?{ (untyped) -> bool } -> void
+
+  # Array of defined attributes
+  def self.attributes: () -> Array[Symbol]
+
+  alias self.attrs self.attributes
+
+  def self.proc_const_name: (keyable attr_name) -> String
+
+  private
+
+  def self.set_proc_to_const: (^(untyped) -> bool, keyable attr_name) -> void
+
+  def self.define_read_method_with_default: (keyable, untyped default_val) -> void
+
+  def self.define_write_method: (keyable attr_name, ^(untyped) -> bool, Hash[Symbol, untyped] options) -> void
+
+  public
+
+  # Convert attributes and values to hash.
+  #
+  # ==== Example
+  #   In builder with attributes 'title', 'author'
+  #   when you will use this method you will have:
+  #   { title: 'Title', author: 'Author' }
+  #
+  def to_h: () -> Hash[Symbol, untyped]
+
+  alias to_hash to_h
+
+  # Validate all attributes.
+  def valid?: () -> bool
+
+  # Validate attribute value.
+  # Proc passed in #field method use for validation.
+  # If proc was not defined just return true.
+  def valid_attr?: (keyable attr_name) -> bool
+
+  private
+
+  def get_proc: (keyable attr_name) -> Proc
+
+  class InvalidValueError < StandardError
+  end
+end
